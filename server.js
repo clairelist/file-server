@@ -5,12 +5,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const File = require('./models/File');
 
-//TODO: TEST ME!
-//TODO: MAKE ME A GIT REPO!
+//TODO: write some automated tests!
 
-const app = express(); //remember we are initalizing an express server!!!
+
+const app = express();
 app.use(express.urlencoded({ extended: true })); //tell express how to use data sent from form tag properly !
-const upload = multer({ dest: './uploads' }); //put all uploads in this 
+const upload = multer({ dest: './uploads' });
 mongoose.connect(process.env.DATABASE_URL); 
 
 app.set('view engine','ejs'); //allows us to render something to our view! This is a new thing...
@@ -25,11 +25,11 @@ app.post('/upload', upload.single('file'), async (req,res)=>{
         originalName: req.file.originalname,
     };
 
-    if (req.body.password != null && req.body.password !== ''){ //TODO: PUT ME IN A CUSTOM WARE !
+    if (req.body.password != null && req.body.password !== ''){
         fileData.password = await bcrypt.hash(req.body.password, 8);
     } 
 
-    const file = await File.create(fileData); //remember, all db access calls should be asynchronous!
+    const file = await File.create(fileData);
     
     res.render('index', { fileLink: `${req.headers.origin}/file/${file.id}` });
 });
@@ -52,10 +52,10 @@ async function handleDownload(req,res){
         }
     }
     file.downloadCount ++;
-    await file.save();
-
-    res.download(file.path, file.originalName);
-    console.log(file.downloadCount);
+    await file.save(); //I am saving in the DATABASE
+ 
+    res.download(file.path, file.originalName); //I am saving on the CLIENT's machine!
+   // console.log(file.downloadCount); //TODO: give something back to the client to read re: download!
 }
 
 app.listen(process.env.PORT);

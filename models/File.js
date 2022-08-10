@@ -1,5 +1,4 @@
-const mongoose = require('mongoose'); //TODO:: ACTUALLY INSTALL MONGOOSE
-//CONTINUE THIS VIDEO FROM `${16:00}`::=> https://www.youtube.com/watch?v=AHXFMu8xVsc&t=3s
+const mongoose = require('mongoose');
 
 const File = new mongoose.Schema({
     path: {
